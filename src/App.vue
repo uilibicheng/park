@@ -26,4 +26,7 @@ export default {
 		height: 100%;
 		background: #fff;
 	}
+	.filter {
+		filter: blur(5px)
+	}
 </style>
