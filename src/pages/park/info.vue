@@ -1,6 +1,6 @@
 <template>
-  <div class="page">
-    <div :class="{'filter' : isShowDialog}">
+  <div class="page" v-if="!isLoading">
+    <div class="content" :class="{'filter' : isShowDialog}">
       <img class="icon-park" src="../../static/images/icon-park.svg">
       <div class="page-title">停车信息</div>
 
@@ -9,32 +9,32 @@
         <div class="info-list">
           <div class="info-item">
             <div class="info-item-label">超市购物单：</div>
-            <div class="info-item-value">31321321321321</div>
+            <div class="info-item-value">{{params.orderNo}}</div>
           </div>
           <div class="info-item">
             <div class="info-item-label">停车场：</div>
-            <div class="info-item-value">xxxxxxxx</div>
+            <div class="info-item-value">{{parkInfo.parkName}}</div>
           </div>
           <div class="info-item">
             <div class="info-item-label">入场时间：</div>
-            <div class="info-item-value">2022.02.24 12:24:30</div>
+            <div class="info-item-value">{{parkInfo.startTime}}</div>
           </div>
           <div class="info-item">
             <div class="info-item-label">车牌号码</div>
-            <div class="info-item-value">xx-xxxxxxx</div>
+            <div class="info-item-value">{{parkInfo.carNo}}</div>
           </div>
           <div class="info-item">
             <div class="info-item-label">计费时长：</div>
-            <div class="info-item-value">xxx分钟</div>
+            <div class="info-item-value">{{parkInfo.serviceTime | serviceTime}}分钟</div>
           </div>
           <div class="info-item">
             <div class="info-item-label">停车费：</div>
-            <div class="info-item-value">￥xxxx</div>
+            <div class="info-item-value">￥{{parkInfo.serviceFee}}</div>
           </div>
         </div>
         <div class="info-item infp-active-item">
           <div class="info-item-label">应付：</div>
-          <div class="info-item-value">￥xxxx</div>
+          <div class="info-item-value">￥{{parkInfo.serviceFee}}</div>
         </div>
       </div>
 
@@ -61,18 +61,47 @@ export default {
   data() {
     return {
       tipText: '未满足优惠条件，无法减免',
-      isShowDialog: true,
-      isShowSlot: false
+      isShowDialog: false,
+      isShowSlot: false,
+      params: {},
+      parkInfo: {},
+      isLoading: true,
     }
   },
 
-  onShow() {
-	},
+  onLoad(option) {
+    console.log('option', option)
+    this.params = option
+    this.getParkInfo()
+  },
+
+  filters: {
+    serviceTime(time) {
+      return time ? Math.ceil(time / 60) : 0
+    }
+  },
 
   methods: {
+    getParkInfo() {
+      this.$http.park.getParkInfo({
+        data: this.params,
+        success: res => {
+          console.log('res', res)
+          this.parkInfo = res
+        },
+        fail: err => {
+
+        },
+        complete: () => {
+          this.isLoading = false
+        }
+      })
+    },
     confirm() {
+      console.log(33333)
+      let params = window.location.hash.split('?')[1] ? '?' + window.location.hash.split('?')[1] : ''
       uni.navigateTo({
-        url: '/pages/park/discount-info'
+        url: `/pages/park/discount-info${params}`
       })
     }
   },
@@ -150,6 +179,15 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      overflow: hidden;
+    }
+    .info-item-label {
+      flex-shrink: 0;
+    }
+    .info-item-value {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     .infp-active-item {
       padding-bottom: 0;

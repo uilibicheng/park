@@ -1,5 +1,5 @@
-import user from './user'
+import park from './park'
 
 export default {
-  user,
+  park,
 }

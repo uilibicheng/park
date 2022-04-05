@@ -20,6 +20,13 @@
 				"navigationStyle": "custom",
 				"navigationBarTitleText": "优惠出场信息"
 			}
+		},
+		{
+			"path": "pages/park/result",
+			"style": {
+				"navigationStyle": "custom",
+				"navigationBarTitleText": "支付结果"
+			}
 		}
 	],
 	"globalStyle": {

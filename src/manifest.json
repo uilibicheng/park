@@ -74,13 +74,14 @@
     },
 		"h5": {
 			"devServer": {
+				"https": false,
 				"port": 8080,
 				"disableHostCheck": true,
 				"proxy": {
-					"/video": {
-						"target": "http://47.119.138.44:8081",
+					"/": {
+						"target": "http://47.108.236.5:7003/",
 						"changeOrigin": true,
-						"secure": false
+            "secure": false
 					}
 				}
 			},

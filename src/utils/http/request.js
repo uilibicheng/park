@@ -15,24 +15,18 @@ class SuperClass {
       title: '加载中...',
       mask: true
     })
-    const data = Object.assign(opts.data || {}),
-    _token = localM.get(LOCAL_KEY.TOKEN) || '',
-    userInfo = localM.get(LOCAL_KEY.USER)
 
     if (!opts.hideLoading) {
       uni.showNavigationBarLoading()
     }
 
+    Object.keys(opts.data).forEach(key => {
+      opts.data[key] = decodeURIComponent(opts.data[key])
+    })
+    const data = Object.assign(opts.data || {})
     return new Promise(function(resolve, reject) {
-      opts.header = {
-        // "Content-Type": "application/json;charset=utf-8",
-        "token": _token,
-      }
-
-      if (userInfo && userInfo.id) {
-        data.userId = userInfo.id
-      }
-      const url = String(opts.url).includes('http') ? opts.url : baseUrl + opts.url
+      // const url = String(opts.url).includes('http') ? opts.url : baseUrl + opts.url
+      const url = opts.url
       uni.request({
         url,
         data: data,
@@ -41,41 +35,18 @@ class SuperClass {
         dataType: 'json',
         responseType: 'text',
         success: res => {
+          console.log('res1111', res)
           const {data} = res
-          if (data.code == 200) { // 成功
+          if (data.code == 1000) { // 成功
             resolve(data)
-          } else if (data.status === 501) { // token 失效或未登录
-            // localM.remove(LOCAL_KEY.TOKEN)
-            // localM.remove(LOCAL_KEY.USER)
-            // 获取当前页面栈，登录后进行跳转
-            // let pages = getCurrentPages()
-            // let currentPage = pages[pages.length - 1]
-            // if (currentPage) {
-            //   let navigateUrl = '/' + currentPage.route
-            //   let params = Object.keys(currentPage.options) || []
-            //   if (params.length) {
-            //     params.forEach((key, index) => {
-            //       navigateUrl = `${navigateUrl}${index === 0 ? '?' : '&'}${key}=${currentPage.options[key]}`
-            //     })
-            //   }
-            //   let url = '/pages/login/login'
-            //   if (navigateUrl) {
-            //     url = `${url}?url=${encodeURIComponent(JSON.stringify(navigateUrl))}`
-            //   }
-            //   setTimeout(() => {
-            //     uni.redirectTo({
-            //       url,
-            //     })
-            //   }, 1000);
-            // }
-            common.toManage("/pages/login/login")
           } else { //其他不可预测为失败
             reject(data)
           }
         },
         fail: res => {
+          console.log('fail', res)
           reject(res.data)
-          toast(res.data && res.data.message || errorMessage)
+          // toast(res.data && res.data.message || errorMessage)
         },
         complete: res => {
           uni.hideLoading()
@@ -99,15 +70,15 @@ const decorator = Sup => class extends Sup { // 超类，实现多继承
 
   async _h(opts, token) {
     const sendFun = opts => {
-      return super._rq(opts, token).catch(res => { //转化http请求 catch捕获promise的reject
-        toast((res && res.message) || errorMessage) //统一提示，若有其他提示，会执行覆盖
+      return super._rq(opts).catch(res => { //转化http请求 catch捕获promise的reject
+        // toast((res && res.message) || errorMessage) //统一提示，若有其他提示，会执行覆盖
         opts.fail && opts.fail(res)
       })
     }
 
     const cb = await sendFun(opts)
     if (!!cb) {
-      (cb.code === 200) && opts.success && opts.success(cb.data || cb.result)
+      (cb.code === 1000) && opts.success && opts.success(cb.data || cb.result)
     }
   }
 

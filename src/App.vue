@@ -29,4 +29,7 @@ export default {
 	.filter {
 		filter: blur(5px)
 	}
+	.content {
+    padding-bottom: 100rpx;
+  }
 </style>
