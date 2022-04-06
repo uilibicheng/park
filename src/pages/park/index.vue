@@ -47,7 +47,7 @@ export default {
   onLoad(option) {
     console.log('option', option)
     this.params = option
-    this.getParkInfo()
+    // this.getParkInfo()
   },
 
   computed: {
@@ -65,17 +65,20 @@ export default {
   methods: {
     getParkInfo() {
       this.$http.park.getParkInfo({
-        data: this.params,
+        data: {pNo: this.carNo, ...this.params},
         success: res => {
-          console.log('res', res)
           this.parkInfo = res
           if (res.retcode != 0) {
-            this.showDialog('查无车辆场内记录，请重新扫码进入')
+            return this.showDialog('查无车辆场内记录，请重新输入', '重新输入')
           } else if (res.tradeStatus > -1) {
-            this.showDialog('消费凭证优惠已被使用，无法减免')
+            return this.showDialog('消费凭证优惠已被使用，无法减免')
           } else if (res.discountFee <= 0) {
             this.showDialog('未满足优惠条件，无法减免')
           }
+          let params = window.location.hash.split('?')[1] ? '?' + window.location.hash.split('?')[1] : ''
+          uni.navigateTo({
+            url: `/pages/park/info${params}&pNo=${this.carNo}`
+          })
         },
         fail: err => {
 
@@ -107,18 +110,11 @@ export default {
     reset() {
       this.isShowDialog = false
       this.isShowSlot = false
-      this.getParkInfo()
     },
     confirm() {
       if (!this.checkValidNum()) return
       this.$refs.carInput.focusIndex = null
-      if (this.carNo !== this.parkInfo.carNo) {
-        return this.showDialog('查无车辆场内记录，请重新输入', '重新输入')
-      }
-      let params = window.location.hash.split('?')[1] ? '?' + window.location.hash.split('?')[1] : ''
-      uni.navigateTo({
-        url: `/pages/park/info${params}`
-      })
+      this.getParkInfo()
     }
   },
 }
