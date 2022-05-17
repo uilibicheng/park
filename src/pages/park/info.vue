@@ -70,7 +70,6 @@ export default {
   },
 
   onLoad(option) {
-    console.log('option', option)
     this.params = option
     this.getParkInfo()
   },
@@ -86,7 +85,6 @@ export default {
       this.$http.park.getParkInfo({
         data: this.params,
         success: res => {
-          console.log('res', res)
           this.parkInfo = res
         },
         fail: err => {
@@ -98,8 +96,7 @@ export default {
       })
     },
     confirm() {
-      console.log(33333)
-      let params = window.location.hash.split('?')[1] ? '?' + window.location.hash.split('?')[1] : ''
+      let params = window.location.search.split('?')[1] ? '?' + window.location.search.split('?')[1] : ''
       uni.navigateTo({
         url: `/pages/park/discount-info${params}`
       })

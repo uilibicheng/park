@@ -86,7 +86,7 @@
 				}
 			},
 			"router": {
-				"mode": "hash"
+				"mode": "history"
 			}
 		}
 }

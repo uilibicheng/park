@@ -1,6 +1,4 @@
 <script>
-import common from '@/utils/common'
-import localM from "@/utils/common/local";
 
 export default {
 	onLaunch: function(options) {

@@ -177,13 +177,11 @@
                     if (vm.numFour) {
                         vm.isNumFive = true
                         vm.key = 7
-                        console.log(4, val)
                     }
                 } else { // 切换到新能源车牌
                     if (vm.numFive) {
                         vm.isNumSix = true
                         vm.key = 8
-                        console.log(3, val)
                     }
                 }
             }
