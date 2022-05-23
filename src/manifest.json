@@ -79,7 +79,7 @@
 				"disableHostCheck": true,
 				"proxy": {
 					"/": {
-						"target": "http://47.108.236.5:7003/",
+						"target": "https://xjccs.cn/",
 						"changeOrigin": true,
             "secure": false
 					}

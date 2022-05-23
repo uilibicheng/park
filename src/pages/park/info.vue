@@ -98,7 +98,6 @@ export default {
       })
     },
     confirm() {
-      console.log(33333)
       let params = window.location.hash.split('?')[1] ? '?' + window.location.hash.split('?')[1] : ''
       uni.navigateTo({
         url: `/pages/park/discount-info${params}`

@@ -25,8 +25,8 @@ class SuperClass {
     })
     const data = Object.assign(opts.data || {})
     return new Promise(function(resolve, reject) {
-      // const url = String(opts.url).includes('http') ? opts.url : baseUrl + opts.url
-      const url = opts.url
+      const url = String(opts.url).includes('http') ? opts.url : baseUrl + opts.url
+      // const url = opts.url
       uni.request({
         url,
         data: data,
