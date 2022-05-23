@@ -31,9 +31,12 @@ export default {
   watch: {
     visible: {
       handler(value) {
+        console.log('value', value, this.hasSlot)
         if (value && !this.hasSlot) {
           let timer = setTimeout(() => {
             this.$emit('update:visible', false)
+            console.log(3333, this.visible)
+            // this.$emit('update:hasSlot', false)
             clearTimeout(timer)
             timer = null
           }, 2000)
@@ -41,6 +44,9 @@ export default {
       },
       immediate: true,
     },
+    // visible(value) {
+    //   console.log('value', value)
+    // }
   }
 }
 </script>

@@ -45,6 +45,7 @@ export default {
       this.$http.park.getOrderInfo({
         data: this.params,
         success: res => {
+          console.log('res', res)
           this.orderInfo = res && res.length ? res[0] : {}
           this.payType = res && res.length ? res[0].status : 1
         },

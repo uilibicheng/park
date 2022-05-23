@@ -75,6 +75,7 @@ export default {
   },
 
   onLoad(option) {
+    console.log('option', option)
     this.params = option
     this.getParkInfo()
   },
@@ -107,7 +108,7 @@ export default {
       })
     },
     confirm() {
-      const callbackUrl = encodeURIComponent(`${window.location.origin}/pages/park/result?pOrderNo=${this.parkInfo.orderNo}`)
+      const callbackUrl = encodeURIComponent(`${window.location.origin}/#/pages/park/result?pOrderNo=${this.parkInfo.orderNo}`)
       window.location = `${this.parkInfo.payUrl}&callbackUrl=${callbackUrl}`
     }
   },
