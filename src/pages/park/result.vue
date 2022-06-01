@@ -1,6 +1,6 @@
 <template>
   <div class="result" v-if="!isLoading">
-    <img v-if="payType === 0" class="icon-status" src="../../static/images/icon-success.svg" alt="">
+    <img v-if="payType == 0" class="icon-status" src="../../static/images/icon-success.svg" alt="">
     <img v-else class="icon-status" src="../../static/images/icon-fail.svg" alt="">
     
     <div class="result-text">{{result}}</div>
@@ -23,7 +23,7 @@ export default {
   watch: {
     payType: {
       handler(val) {
-        if (val === 0) {
+        if (Number(val) === 0) {
           this.result = '支付成功'
           this.resultTip = '祝您购物愉快'
         } else {
@@ -37,7 +37,12 @@ export default {
 
   onLoad(option) {
     this.params = option
-    this.getOrderInfo()
+    if (option.pOrderNo) {
+      this.getOrderInfo()
+    } else {
+      this.payType = option.payType
+      this.isLoading = false
+    }
   },
 
   methods: {

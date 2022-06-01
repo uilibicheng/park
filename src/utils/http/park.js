@@ -8,5 +8,9 @@ export default {
   getOrderInfo(opts) {
     opts.url = `/app/order/notify`
     $http.post(opts)
-  }
+  },
+  pushnotify(opts) {
+    opts.url = `/app/order/pushnotify`
+    $http.post(opts)
+  },
 }

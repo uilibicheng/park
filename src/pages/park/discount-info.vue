@@ -51,7 +51,7 @@
       :visible.sync="isShowDialog"
       :has-slot.sync="isShowSlot"
       :tipText="tipText">
-      <div class="dialog-btn" v-if="isShowSlot">重新输入</div>
+      <div class="dialog-btn" v-if="isShowSlot" @click="jumpToResult">{{btnText}}</div>
     </Dialog>
   </div>
 </template>
@@ -66,6 +66,7 @@ export default {
   data() {
     return {
       tipText: '未满足优惠条件，无法减免',
+      btnText: '确认',
       isShowDialog: false,
       isShowSlot: false,
       params: null,
@@ -97,6 +98,10 @@ export default {
         data: this.params,
         success: res => {
           this.parkInfo = res
+
+          if (res.totalFee <= 0) {
+            this.showTip('请点击【前往支付】继续出场')
+          }
         },
         fail: err => {
 
@@ -106,14 +111,36 @@ export default {
         }
       })
     },
+    showTip(tip) {
+      this.isShowDialog = true
+      this.tipText = tip
+    },
     confirm() {
       if (this.parkInfo.totalFee > 0) {
         const callbackUrl = encodeURIComponent(`${window.location.origin}/#/pages/park/result?pOrderNo=${this.parkInfo.orderNo}`)
         window.location = `${this.parkInfo.payUrl}&callbackUrl=${callbackUrl}`
       } else {
-        this.isShowDialog = true
-        this.tipText = '未产生费用，无需支付'
+        this.notifySuccess()
       }
+    },
+    notifySuccess() {
+      this.$http.park.pushnotify({
+        data: {
+          orderNo: this.parkInfo.orderNo || '',
+        },
+        success: res => {
+          this.isShowSlot = true
+          this.showTip('已完成支付，15分钟内可免费出场')
+        },
+        fail: err => {
+          this.showTip('支付失败，请重试')
+        },
+      })
+    },
+    jumpToResult() {
+      uni.navigateTo({
+        url: `/pages/park/result?payType=0`
+      })
     }
   },
 }
