@@ -45,7 +45,6 @@ export default {
 	},
 
   onLoad(option) {
-    console.log('option', option)
     this.params = option
     // this.getParkInfo()
   },

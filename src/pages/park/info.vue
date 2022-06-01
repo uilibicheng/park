@@ -70,7 +70,6 @@ export default {
   },
 
   onLoad(option) {
-    console.log('option', option)
     this.params = option
     this.getParkInfo()
   },
@@ -86,7 +85,6 @@ export default {
       this.$http.park.getParkInfo({
         data: this.params,
         success: res => {
-          console.log('res', res)
           this.parkInfo = res
         },
         fail: err => {

@@ -75,7 +75,6 @@ export default {
   },
 
   onLoad(option) {
-    console.log('option', option)
     this.params = option
     this.getParkInfo()
   },
@@ -108,8 +107,13 @@ export default {
       })
     },
     confirm() {
-      const callbackUrl = encodeURIComponent(`${window.location.origin}/#/pages/park/result?pOrderNo=${this.parkInfo.orderNo}`)
-      window.location = `${this.parkInfo.payUrl}&callbackUrl=${callbackUrl}`
+      if (this.parkInfo.totalFee > 0) {
+        const callbackUrl = encodeURIComponent(`${window.location.origin}/#/pages/park/result?pOrderNo=${this.parkInfo.orderNo}`)
+        window.location = `${this.parkInfo.payUrl}&callbackUrl=${callbackUrl}`
+      } else {
+        this.isShowDialog = true
+        this.tipText = '未产生费用，无需支付'
+      }
     }
   },
 }

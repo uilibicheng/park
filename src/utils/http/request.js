@@ -35,7 +35,6 @@ class SuperClass {
         dataType: 'json',
         responseType: 'text',
         success: res => {
-          console.log('res1111', res)
           const {data} = res
           if (data.code == 1000) { // 成功
             resolve(data)
