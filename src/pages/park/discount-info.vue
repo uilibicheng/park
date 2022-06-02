@@ -77,7 +77,7 @@ export default {
 
   onLoad(option) {
     this.params = option
-    this.getParkInfo()
+    // this.getParkInfo()
   },
 
   onShow() {
@@ -100,7 +100,7 @@ export default {
           this.parkInfo = res
 
           if (res.totalFee <= 0) {
-            this.showTip('请点击【前往支付】继续出场')
+            this.showTip('本次停车订单已完全抵扣，请点击“前往支付”继续出场')
           }
         },
         fail: err => {
@@ -117,17 +117,19 @@ export default {
     },
     confirm() {
       if (this.parkInfo.totalFee > 0) {
-        const callbackUrl = encodeURIComponent(`${window.location.origin}/#/pages/park/result?pOrderNo=${this.parkInfo.orderNo}`)
+        const callbackUrl = encodeURIComponent(`${window.location.origin}/#/pages/park/result?pOrderNo=${this.parkInfo.orderNo}&orderNo=${this.params.orderNo}`)
         window.location = `${this.parkInfo.payUrl}&callbackUrl=${callbackUrl}`
       } else {
         this.notifySuccess()
       }
     },
     notifySuccess() {
+      const data = {
+        pOrderNo: this.parkInfo.orderNo || '',
+        orderNo: this.params.orderNo || '',
+      }
       this.$http.park.pushnotify({
-        data: {
-          orderNo: this.parkInfo.orderNo || '',
-        },
+        data,
         success: res => {
           this.isShowSlot = true
           this.showTip('已完成支付，15分钟内可免费出场')
@@ -138,6 +140,8 @@ export default {
       })
     },
     jumpToResult() {
+      this.isShowDialog = false
+      this.isShowSlot = false
       uni.navigateTo({
         url: `/pages/park/result?payType=0`
       })
@@ -148,7 +152,7 @@ export default {
 
 <style>
 .dialog-btn {
-  margin-top: 120rpx;
+  margin-top: 80rpx;
   width: 450rpx;
   height: 80rpx;
   line-height: 80rpx;
@@ -163,9 +167,6 @@ export default {
 
 <style lang="scss" scoped>
 .page {
-  background: #dbe2ef;
-  width: 100%;
-  height: 100%;
 
   .icon-park {
     margin: 0 auto ;

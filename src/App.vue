@@ -26,6 +26,11 @@ export default {
 		height: 100%;
 		background: #fff;
 	}
+	.page {
+		background: #dbe2ef;
+		width: 100%;
+		min-height: 100%;
+	}
 	.filter {
 		filter: blur(5px)
 	}

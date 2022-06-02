@@ -121,7 +121,7 @@ export default {
 
 <style>
 .dialog-btn {
-  margin-top: 120rpx;
+  margin-top: 80rpx;
   width: 450rpx;
   height: 80rpx;
   line-height: 80rpx;
@@ -136,9 +136,6 @@ export default {
 
 <style lang="scss">
 .page {
-  background: #dbe2ef;
-  width: 100%;
-  height: 100%;
 
   .icon-park {
     margin: 0 auto ;

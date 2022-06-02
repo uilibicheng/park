@@ -4,7 +4,7 @@
       <div class="mask"></div>
       <div class="dialog">
         <img class="icon-tip" src="../static/images/icon-tip.svg" alt="">
-        <span v-if="tipText">{{tipText}}</span>
+        <div v-if="tipText" class="tip-text">{{tipText}}</div>
         <slot></slot>
       </div>
     </div>
@@ -78,7 +78,7 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 600rpx;
-    padding: 65rpx 40rpx;
+    padding: 60rpx 40rpx 70rpx;
     border-radius: 30rpx;
     background: #ffffff;
     color: #4d5da8;
@@ -89,6 +89,11 @@ export default {
     align-items: center;
     justify-content: center;
     z-index: 99;
+
+    .tip-text {
+      text-align: center;
+      line-height: 52rpx;
+    }
 
     .icon-tip {
       width: 60rpx;
