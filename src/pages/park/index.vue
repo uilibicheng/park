@@ -72,7 +72,7 @@ export default {
           } else if (res.tradeStatus > -1) {
             return this.showDialog('消费凭证优惠已被使用，无法减免')
           } else if (res.discountFee <= 0) {
-            this.showDialog('未满足优惠条件，无法减免')
+            return this.showDialog('未满足优惠条件，无法减免')
           }
           let params = window.location.hash.split('?')[1] ? '?' + window.location.hash.split('?')[1] : ''
           uni.navigateTo({
@@ -80,7 +80,7 @@ export default {
           })
         },
         fail: err => {
-
+          this.showDialog(err.message)
         }
       })
     },
